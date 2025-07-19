@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario | Proveedores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            padding-top: 56px; /* Altura de la barra de navegación fija */
+            background-color: #f8f9fa; /* Color de fondo suave */
+        }
+        .container-fluid {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05); /* Sombra sutil */
+        }
+        .card-header {
+            background-color: #28a745; /* Color verde para proveedores */
+            color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            font-weight: bold;
+        }
+        .table thead th {
+            background-color: #e9ecef; /* Fondo para encabezados de tabla */
+            color: #495057;
+        }
+        .btn-action {
+            width: 30px; /* Tamaño fijo para botones de acción */
+            height: 30px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-warehouse me-2"></i> Gestión de Inventario
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownReports" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-chart-bar me-1"></i> Reportes
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownReports">
+                        <li><a class="dropdown-item" href="/app_ikbo/inventario.html">Inventario acumulado</a></li>
+						<li><a class="dropdown-item" href="/app_ikbo/inventariolot.html">Inventario por lotes</a></li>
+
+                    </ul>
+                </li>
+			
+                <li class="nav-item"><a class="nav-link" href="/app_ikbo/index.html"><i class="fas fa-box me-1"></i> Productos</a></li>
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="/app_ikbo/proveedores.html"><i class="fas fa-truck-moving me-1"></i> Proveedores</a></li>
+                <li class="nav-item"><a class="nav-link" href="/app_ikbo/movimientos.html"><i class="fas fa-exchange-alt me-1"></i> Movimientos</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <div class="container-fluid">
+        <h1 class="mb-4 text-center text-success">Administración de Proveedores</h1>
+
+        <div id="alertContainer" class="mb-4">
+            </div>
+
+        <div class="card mb-5">
+            <div class="card-header">
+                <h3 class="mb-0">
+                    <i class="fas fa-user-plus me-2"></i> Crear / Actualizar Proveedor
+                </h3>
+            </div>
+            <div class="card-body">
+                <form id="supplierForm">
+                    <input type="hidden" id="supplierId" name="id_proveedor">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombre_proveedor" class="form-label">Nombre del Proveedor <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre_proveedor" name="nombre_proveedor" placeholder="Ej: Lácteos del Campo S.A." required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="contacto_proveedor" class="form-label">Contacto</label>
+                            <input type="text" class="form-control" id="contacto_proveedor" name="contacto_proveedor" placeholder="Ej: Juan Pérez">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="telefono_proveedor" class="form-label">Teléfono</label>
+                            <input type="tel" class="form-control" id="telefono_proveedor" name="telefono_proveedor" placeholder="Ej: 555-1234">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email_proveedor" class="form-label">Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email_proveedor" name="email_proveedor" placeholder="Ej: contacto@dominio.com" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="direccion_proveedor" class="form-label">Dirección</label>
+                        <textarea class="form-control" id="direccion_proveedor" name="direccion_proveedor" rows="3" placeholder="Calle, número, ciudad, etc."></textarea>
+                    </div>
+                    <div class="d-flex justify-content-start gap-2">
+                        <button type="submit" class="btn btn-primary" id="submitButton">
+                            <i class="fas fa-save me-1"></i> Crear Proveedor
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="clearFormButton">
+                            <i class="fas fa-eraser me-1"></i> Limpiar Formulario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3 class="mb-0"><i class="fas fa-list me-2"></i> Lista de Proveedores</h3>
+                <button type="button" class="btn btn-success" id="refreshSuppliersButton">
+                    <i class="fas fa-sync-alt me-1"></i> Actualizar Lista
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Contacto</th>
+                                <th>Teléfono</th>
+                                <th>Email</th>
+                                <th>Dirección</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="suppliersTableBody">
+                            <tr>
+                                <td colspan="7" class="text-center">Cargando proveedores...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-5">
+        <div class="container">
+            <p>&copy; 2025 Gestión de Inventario. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="app_proveedores.js"></script>
+
+    <script>
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            `;
+            alertContainer.innerHTML = alertHtml;
+            // Opcional: auto-cierre de la alerta después de unos segundos
+            setTimeout(() => {
+                const alertElement = alertContainer.querySelector('.alert');
+                if (alertElement) {
+                    new bootstrap.Alert(alertElement).close();
+                }
+            }, 5000); // 5 segundos
+        }
+    </script>
+</body>
+</html>
